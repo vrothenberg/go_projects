@@ -4,6 +4,7 @@ import (
 	"crypto/qualifying"
 	"encoding/hex"
 	"fmt"
+	"log"
 )
 
 func hexToASCII(hexStr string) (string, error) {
@@ -47,13 +48,36 @@ func main() {
 	// fmt.Println("Encrypted Line:", line)
 	// fmt.Printf("Score: %.2f\n", score)
 
-	// Challenge 5 - Repeating Key XOR
-	plaintext := "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"
-	key := "ICE"
+	// // Challenge 5 - Repeating Key XOR
+	// plaintext := "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"
+	// key := "ICE"
 
-	encrypted := qualifying.RepeatingKeyXOR(plaintext, key)
+	// encrypted := qualifying.RepeatingKeyXOR(plaintext, key)
 
-	fmt.Println("Encrypted Hex Output:")
-	fmt.Println(encrypted)
+	// fmt.Println("Encrypted Hex Output:")
+	// fmt.Println(encrypted)
+
+	// Challenge 6 - Break repeating-key XOR
+	text1 := "this is a test"
+	text2 := "wokka wokka!!!"
+	text1_bytes := []byte(text1)
+	text2_bytes := []byte(text2)
+	dist, err := qualifying.HammingDistance(text1_bytes, text2_bytes)
+	if err != nil {
+		fmt.Printf("Error: %s\n", err)
+	} else {
+		fmt.Printf("Hamming distance: %d\n", dist)
+	}
+
+	filename := "qualifying/data/6.txt"
+
+	key, plaintext, err := qualifying.BreakRepeatingKeyXOR(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Discovered key:", key)
+	fmt.Println("Decrypted plaintext:")
+	fmt.Println(plaintext)
 
 }
