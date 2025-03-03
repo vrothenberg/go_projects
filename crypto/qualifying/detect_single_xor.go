@@ -2,6 +2,7 @@ package qualifying
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 )
 
@@ -15,6 +16,7 @@ func DetectSingleCharacterXOR(filename string) (bestDecryption string, bestKey b
 
 	scanner := bufio.NewScanner(file)
 	bestScore = 0
+	i := 0
 
 	// Scan through each line in the file
 	for scanner.Scan() {
@@ -22,8 +24,11 @@ func DetectSingleCharacterXOR(filename string) (bestDecryption string, bestKey b
 
 		decrypted, key, score, err := SingleByteXOR(line)
 		if err != nil {
+			fmt.Printf("[%d] Error %s", i, err)
 			continue // Skip invalid hex lines
 		}
+
+		// fmt.Printf("Line: %s\nDecryption Score: %.2f\n\n", line, score)
 
 		// Keep track of the best decryption
 		if score > bestScore {
